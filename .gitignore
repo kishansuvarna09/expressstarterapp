@@ -1,0 +1,8 @@
+# exclude node modules
+node_modules
+
+# exclude environment files
+.env.dev
+
+# exclude lock files
+package-lock.json
