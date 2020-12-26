@@ -1,9 +1,10 @@
 const express = require('express');
 const dotenv = require('dotenv');
+const path = require('path');
 
 const app = express();
 
-const env = dotenv.config({ path: './.env.dev' });
+const env = dotenv.config({ path: path.basename('../.env.dev') });
 console.log(env);
 const PORT = env.PORT || 3000;
 const DOMAIN = env.DOMAIN || 'http://localhost';
