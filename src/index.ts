@@ -1,18 +1,31 @@
-const express = require('express');
-const dotenv = require('dotenv');
-const path = require('path');
+import express from 'express';
+import session from 'express-session';
+import connectRedis from 'connect-redis';
+import Redis from 'ioredis';
+import mongoose from 'mongoose';
+import {
+  REDIS_OPTIONS,
+  SESSION_OPTIONS,
+  APP_PORT,
+  MONGO_URI,
+  MONGO_OPTIONS,
+} from './config';
 
-const app = express();
+(async () => {
+  await mongoose.connect(MONGO_URI, MONGO_OPTIONS);
+  const RedisStore = connectRedis(session);
 
-const env = dotenv.config({ path: path.basename('../.env.dev') });
-console.log(env);
-const PORT = env.PORT || 3000;
-const DOMAIN = env.DOMAIN || 'http://localhost';
+  const client = new Redis(REDIS_OPTIONS);
 
-app.get('/', (req, res) => {
-  res.send('Hello World');
-});
+  const app = express();
 
-app.listen(PORT, () => {
-  console.log(`App listening at ${DOMAIN}:${PORT}`);
-});
+  app.use(session({ ...SESSION_OPTIONS, store: new RedisStore({ client }) }));
+
+  app.get('/', (req, res) => {
+    res.send('Hello World');
+  });
+
+  app.listen(APP_PORT, () => {
+    console.log(`App listening at http://localhost:${APP_PORT}`);
+  });
+})();
