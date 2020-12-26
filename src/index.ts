@@ -12,7 +12,8 @@ import {
 } from './config';
 
 (async () => {
-  await mongoose.connect(MONGO_URI, MONGO_OPTIONS);
+  try {
+    await mongoose.connect(MONGO_URI, MONGO_OPTIONS);
   const RedisStore = connectRedis(session);
 
   const client = new Redis(REDIS_OPTIONS);
@@ -28,4 +29,7 @@ import {
   app.listen(APP_PORT, () => {
     console.log(`App listening at http://localhost:${APP_PORT}`);
   });
+  } catch(error) {
+    console.error(error)
+  }
 })();

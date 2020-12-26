@@ -14,6 +14,4 @@ export const MONGO_URI = `mongodb://${MONGO_USERNAME}:${encodeURIComponent(
 export const MONGO_OPTIONS: ConnectionOptions = {
   useNewUrlParser: true,
   useUnifiedTopology: true,
-  useFindAndModify: false,
-  useCreateIndex: true,
 };
